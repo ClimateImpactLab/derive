@@ -10,7 +10,7 @@ outdir = config['output-dir']
 
 output_format = config.get('output-format', "edfcsv")
 if output_format not in ['edfcsv', 'valuescsv']:
-    print "Error: output-format must be edfcsv or valuescsv."
+    print("Error: output-format must be edfcsv or valuescsv.")
     exit()
     
 do_gcmweights = config.get('do-gcmweights', True)
@@ -20,7 +20,7 @@ allimpacts = config['only-impacts'] if config.get('only-impacts', 'all') != 'all
 suffix = configs.get_suffix(config)
 column = config['column']
 allow_partial = config['allow-partial']
-batches = range(config['batches']) if isinstance(config['batches'], int) else config['batches']
+batches = list(range(config['batches'])) if isinstance(config['batches'], int) else config['batches']
 
 evalpvals = list(np.linspace(.01, .99, 99))
 
@@ -32,7 +32,7 @@ if do_yearsets:
     else:
         yearses = [(2020, 2039), (2040, 2059), (2080, 2099)]
 else:
-    years = range(2000, 2100)
+    years = list(range(2000, 2100))
 
 if do_yearsetmeans:
     combine_years = np.mean
@@ -43,13 +43,13 @@ if not os.path.exists(outdir):
     os.mkdir(outdir)
 
 for impact in allimpacts:
-    print impact
+    print(impact)
 
     # Collect all available results
     data = {} # { rcp-year0 => { region => { batch-realization => { model => value } } } }
 
     for (batch, rcp, model, realization, pvals, targetdir) in configs.iterate_valid_targets(config, [impact]):
-        print targetdir
+        print(targetdir)
 
         collection = batch + '-' + realization
 
@@ -93,11 +93,11 @@ for impact in allimpacts:
             with open(os.path.join(outdir, impact + '-' + dist + '.csv'), 'w') as csvfp:
                 writer = csv.writer(csvfp, quoting=csv.QUOTE_MINIMAL)
                 if output_format == 'edfcsv':
-                    writer.writerow(['region'] + map(lambda q: 'q' + str(q), evalpvals))
+                    writer.writerow(['region'] + ['q' + str(q) for q in evalpvals])
                 elif output_format == 'valuescsv':
                     writer.writerow(['region', 'collection', 'model', 'value', 'weight'])
 
-                for region in data[dist].keys():
+                for region in list(data[dist].keys()):
 
                     allvalues = []
                     allweights = []
@@ -106,13 +106,13 @@ for impact in allimpacts:
 
                     for collection in data[dist][region]:
                         if not do_gcmweights and allow_partial == 0:
-                            print "Warning: Not using GCM weights, but still using the number of GCM weighted models for limiting batches.  Set allow-partial > 0 to remove warning."
+                            print("Warning: Not using GCM weights, but still using the number of GCM weighted models for limiting batches.  Set allow-partial > 0 to remove warning.")
                             allow_partial = len(model_weights)
                         if len(data[dist][region][collection]) >= (allow_partial if allow_partial > 0 else len(model_weights)):
                             if do_gcmweights:
                                 (values, valueweights) = weights.weighted_values(data[dist][region][collection], model_weights)
                                 if len(values) == 0:
-                                    print "Cannot find any values for weighted models."
+                                    print("Cannot find any values for weighted models.")
                                     continue
                                 if isinstance(values[0], list):
                                     for ii in range(len(values)):
@@ -123,15 +123,15 @@ for impact in allimpacts:
                                 else:
                                     allvalues += values
                                     allweights += valueweights
-                                    allmodels += data[dist][region][collection].keys()
+                                    allmodels += list(data[dist][region][collection].keys())
                                     allcollections += [collection] * len(values)
                             else:
-                                allvalues += data[dist][region][collection].values()
+                                allvalues += list(data[dist][region][collection].values())
                                 allweights += [1.] * len(data[dist][region][collection])
-                                allmodels += data[dist][region][collection].keys()
+                                allmodels += list(data[dist][region][collection].keys())
                                 allcollections += [collection] * len(data[dist][region][collection])
 
-                    print dist, region, len(allvalues)
+                    print(dist, region, len(allvalues))
                     if len(allvalues) == 0:
                         continue
 

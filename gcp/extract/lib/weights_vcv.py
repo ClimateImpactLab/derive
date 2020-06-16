@@ -58,7 +58,7 @@ class WeightedGMCDF(object):
     @staticmethod
     def encode_evalqvals(evalqvals):
         encoder = {'mean': 2}
-        return map(lambda p: p if isinstance(p, float) else encoder[p], evalqvals)
+        return [p if isinstance(p, float) else encoder[p] for p in evalqvals]
 
 if __name__ == '__main__':
     ## Example between R and python
@@ -82,5 +82,5 @@ if __name__ == '__main__':
     pp = [0.04261865, 0.57543051, 0.09961645, 0.13132502, 0.68372897, 0.89938713, 0.37682157, 0.25068274, 0.72613404, 0.92355014]
     
     dist = WeightedGMCDF(means, variances, weights)
-    print dist.inverse(pp)
+    print(dist.inverse(pp))
     # [-2.708582712985005, 0.7720415676939508, -2.152969315647189, -1.8999500392063315, 1.1698917665106159, 1.955783738182657, -0.0641650435162273, -0.9150700927430755, 1.3660161904436894, 2.004650382993468]

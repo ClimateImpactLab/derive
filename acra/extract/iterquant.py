@@ -10,7 +10,7 @@ config = configs.read_default_config()
 
 allimpacts = config['only-impacts'] if config.get('only-impacts', 'all') != 'all' else impacts.allimpacts
 
-print "Collecting all available models."
+print("Collecting all available models.")
 allmodels = set()
 for (batch, rcp, model, realization, pvals, targetdir) in configs.iterate_valid_targets(config, allimpacts, verbose=False):
     allmodels.add(model)
@@ -21,7 +21,7 @@ if not os.path.exists(outdir):
     os.mkdir(outdir)
 
 for model in allmodels:
-    print "Processing", model
+    print("Processing", model)
     modeloutdir = os.path.join(outdir, model)
     if not os.path.exists(modeloutdir):
         os.mkdir(modeloutdir)

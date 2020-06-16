@@ -43,10 +43,10 @@ if configs.is_parallel_deltamethod(config):
     parallel_deltamethod_data, parallel_deltamethod_years = results.sum_into_data(config['deltamethod'], basenames, columns, config2, transforms, vectransforms)
 
 for filestuff in data:
-    print "Creating file: " + str(filestuff)
+    print("Creating file: " + str(filestuff))
     
     if configs.is_parallel_deltamethod(config) and filestuff not in parallel_deltamethod_data:
-        print str(filestuff) + " is not in delta method output. Skipping model specification..."
+        print(str(filestuff) + " is not in delta method output. Skipping model specification...")
         continue
     
     with open(configs.csv_makepath(filestuff, config), 'w') as fp:
@@ -54,7 +54,7 @@ for filestuff in data:
         rownames = configs.csv_rownames(config)
 
         if output_format == 'edfcsv':
-            writer.writerow(rownames + map(lambda q: q if isinstance(q, str) else 'q' + str(int(q * 100)), evalqvals))
+            writer.writerow(rownames + [q if isinstance(q, str) else 'q' + str(int(q * 100)) for q in evalqvals])
             if configs.is_parallel_deltamethod(config):
                 encoded_evalqvals = weights_vcv.WeightedGMCDF.encode_evalqvals(evalqvals)
             else:
@@ -63,8 +63,8 @@ for filestuff in data:
             writer.writerow(rownames + ['batch', 'gcm', 'iam', 'value', 'weight'])
 
             
-        for rowstuff in configs.csv_sorted(data[filestuff].keys(), config):
-            print "Outputing row: " + str(rowstuff)
+        for rowstuff in configs.csv_sorted(list(data[filestuff].keys()), config):
+            print("Outputing row: " + str(rowstuff))
             if do_gcmweights:
                 model_weights = weights.get_weights(configs.csv_organized_rcp(filestuff, rowstuff, config))
 
@@ -82,7 +82,7 @@ for filestuff in data:
                     try:
                         weight = model_weights[gcm.lower()]
                     except:
-                        print "Warning: No weight available for %s, so dropping." % gcm
+                        print("Warning: No weight available for %s, so dropping." % gcm)
                         weight = 0.
                 else:
                     weight = 1.

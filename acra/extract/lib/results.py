@@ -103,7 +103,7 @@ def iterate_byp(root, batches=None):
 
     if batches == 'truehist':
         # If the truehist scenario is request, only look for this
-        for pdir in pdirs.keys():
+        for pdir in list(pdirs.keys()):
             targetdir = os.path.join(root, pdir, 'truehist')
             if not os.path.exists(targetdir) or 'pvals.txt' not in os.listdir(targetdir):
                 continue # Ignore if no pval file
@@ -116,7 +116,7 @@ def iterate_byp(root, batches=None):
         return
 
     # Look only for the named directories
-    for pdir in pdirs.keys():
+    for pdir in list(pdirs.keys()):
         if not os.path.exists(os.path.join(root, pdir)):
             continue
 

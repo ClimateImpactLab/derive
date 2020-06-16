@@ -33,7 +33,7 @@ def get_weights_april2016(rcp):
 
     with open('/shares/gcp/climate/BCSD/SMME/SMME-weights/' + rcp + '_2090_SMME_edited_for_April_2016.tsv', 'rU') as tsvfp:
         reader = csv.reader(tsvfp, delimiter='\t')
-        header = reader.next()
+        header = next(reader)
         for row in reader:
             model = row[1].split('_')[0].strip('*').lower()
             weight = float(row[2])
@@ -49,7 +49,7 @@ def get_weights_march2018(rcp):
 
     with open('/shares/gcp/climate/BCSD/SMME/SMME-weights/' + rcp + '_SMME_weights.tsv', 'rU') as tsvfp:
         reader = csv.reader(tsvfp, delimiter='\t')
-        header = reader.next()
+        header = next(reader)
         for row in reader:
             model = row[1].strip('*').lower()
             if '_' in model:
@@ -64,7 +64,7 @@ def get_weights_march2018(rcp):
 
 def weighted_values(values, weights):
     """Takes a dictionary of model => value"""
-    models = values.keys()
+    models = list(values.keys())
     values_list = [values[model] for model in models if model in weights]
     weights_list = [weights[model] for model in models if model in weights]
 
@@ -84,7 +84,7 @@ class WeightedECDF(StepFunction):
         
         self.expected = sum(np.array(values) * np.array(weights)) / sum(weights)
 
-        order = sorted(range(len(values)), key=lambda ii: values[ii])
+        order = sorted(list(range(len(values))), key=lambda ii: values[ii])
         self.values = np.array([values[ii] for ii in order])
         self.weights = [weights[ii] for ii in order]
 
@@ -117,7 +117,7 @@ class WeightedECDF(StepFunction):
     @staticmethod
     def encode_evalqvals(evalqvals):
         encoder = {'mean': 2, 'sdev': 3}
-        return map(lambda p: p if isinstance(p, float) else encoder[p], evalqvals)
+        return [p if isinstance(p, float) else encoder[p] for p in evalqvals]
 
 if __name__ == '__main__':
     import sys
@@ -128,9 +128,9 @@ if __name__ == '__main__':
         if rcp == 'historical':
             continue
         weights = get_weights(rcp)
-        print weights
+        print(weights)
         for gcm in os.listdir(os.path.join(batchdir, rcp)):
             try:
-                print gcm, weights[gcm.lower()]
+                print(gcm, weights[gcm.lower()])
             except:
-                print "Cannot find weight for %s under %s" % (gcm, rcp)
+                print("Cannot find weight for %s under %s" % (gcm, rcp))

@@ -3,11 +3,11 @@
 import sys, os, re
 import yaml, csv
 import numpy as np
-import results
+from . import results
 
 def consume_config():
     if len(sys.argv) < 2:
-        print "Please specify a configuration (.yml) file."
+        print("Please specify a configuration (.yml) file.")
         exit()
     
     argv = []
@@ -44,7 +44,7 @@ def handle_multiimpact_vcv(config):
         with open(config['multiimpact_vcv'], 'r') as fp:
             reader = csv.reader(fp)
             for row in reader:
-                multiimpact_vcv.append(map(float, row))
+                multiimpact_vcv.append(list(map(float, row)))
         config['multiimpact_vcv'] = np.array(multiimpact_vcv)
     else:
         config['multiimpact_vcv'] = None
@@ -88,20 +88,20 @@ def iterate_valid_targets(root, config, impacts=None, verbose=True):
 
         if checks is not None and not results.directory_contains(targetdir, checks):
             if verbose:
-                print targetdir, "missing", checks
+                print(targetdir, "missing", checks)
             continue
 
         if do_rcp_only and rcp != do_rcp_only:
-            print targetdir, "not", do_rcp_only
+            print(targetdir, "not", do_rcp_only)
             continue
         if do_iam_only and iam != do_iam_only:
-            print targetdir, "not", do_iam_only
+            print(targetdir, "not", do_iam_only)
             continue
         if do_ssp_only and ssp != do_ssp_only:
-            print targetdir, "not", do_ssp_only
+            print(targetdir, "not", do_ssp_only)
             continue
         if allmodels is not None and model not in allmodels:
-            print targetdir, "not in", allmodels
+            print(targetdir, "not in", allmodels)
             continue
 
         if impacts is None:
@@ -111,7 +111,7 @@ def iterate_valid_targets(root, config, impacts=None, verbose=True):
                     allthere = True
                     for name in dmpath:
                         if not os.path.isdir(dmpath[name]):
-                            print "deltamethod", dmpath[name], "missing 1"
+                            print("deltamethod", dmpath[name], "missing 1")
                             allthere = False
                             break
                     if allthere:
@@ -121,7 +121,7 @@ def iterate_valid_targets(root, config, impacts=None, verbose=True):
                     observations += 1
                     yield batch, rcp, model, iam, ssp, targetdir
                 elif verbose:
-                    print "deltamethod", get_deltamethod_path(targetdir, config), "missing 2"
+                    print("deltamethod", get_deltamethod_path(targetdir, config), "missing 2")
             else:
                 observations += 1
                 yield batch, rcp, model, iam, ssp, targetdir
@@ -133,17 +133,17 @@ def iterate_valid_targets(root, config, impacts=None, verbose=True):
                         if isinstance(targetdir, dict):
                             dmpath = os.path.join(multipath(get_deltamethod_path(targetdir, config), impact), impact + ".nc4")
                             if not os.path.isfile(dmpath):
-                                print "deltamethod", dmpath, "missing 3"
+                                print("deltamethod", dmpath, "missing 3")
                                 continue
                         elif not os.path.isfile(os.path.join(targetdir, impact + ".nc4")):
-                            print "deltamethod", dmpath, "missing 4"
+                            print("deltamethod", dmpath, "missing 4")
                             continue
                     observations += 1
                     yield batch, rcp, model, iam, ssp, targetdir
                     break
 
     if observations == 0:
-        print message_on_none
+        print(message_on_none)
 
 def is_parallel_deltamethod(config):
     dmconf = config.get('deltamethod', False)
@@ -219,9 +219,9 @@ def get_regions(config, allregions):
     if 'global' in regions:
         regions = ['' if x == 'global' else x for x in regions]
     if 'countries' in regions:
-        regions = filter(lambda x: x != 'countries', regions) + filter(lambda x: len(x) == 3, allregions)
+        regions = [x for x in regions if x != 'countries'] + [x for x in allregions if len(x) == 3]
     if 'funds' in regions:
-        regions = filter(lambda x: x != 'funds', regions) + filter(lambda x: x[:5] == 'FUND-', allregions)
+        regions = [x for x in regions if x != 'funds'] + [x for x in allregions if x[:5] == 'FUND-']
 
     return regions
 

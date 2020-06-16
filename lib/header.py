@@ -72,7 +72,7 @@ def parse(fp):
             header['version'] = chunks[1].strip()
             addcall = None
         elif title == 'dependencies':
-            header['dependencies'] = map(lambda s: s.strip(), chunks[1].split(','))
+            header['dependencies'] = [s.strip() for s in chunks[1].split(',')]
             addcall = None
         elif title == 'variables':
             header['variables'] = {}
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     def rlinput(prompt, prefill=''):
         readline.set_startup_hook(lambda: readline.insert_text(prefill))
         try:
-            return raw_input(prompt)
+            return input(prompt)
         finally:
             readline.set_startup_hook()
 
@@ -117,16 +117,16 @@ if __name__ == '__main__':
 
     if filename_in[-4:].lower() == '.fgh':
         filename_out = filename_in
-        print "Output file: ", filename_out
+        print("Output file: ", filename_out)
         filename_in = None
     else:
-        print "Input File: ", filename_in
+        print("Input File: ", filename_in)
         filename_out = rlinput("Output File: ", filename_in)
 
     oneline = rlinput("One line description: ")
     version = rlinput("Version: ")
 
-    print "Enter the dependencies (blank to finish):"
+    print("Enter the dependencies (blank to finish):")
     dependencies = []
     while True:
         dependency = rlinput("Version: ")
@@ -134,7 +134,7 @@ if __name__ == '__main__':
             break
         dependencies.append(dependency)
 
-    print "Define the variables (blank to finish):"
+    print("Define the variables (blank to finish):")
     variables = {}
     while True:
         name = rlinput("Variable Name: ")
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         unit = rlinput("Units: ")
         variables[name] = (desc, unit)
 
-    print "Define the sources (blank to finish):"
+    print("Define the sources (blank to finish):")
     sources = {}
     while True:
         name = rlinput("Source Name: ")
@@ -155,7 +155,7 @@ if __name__ == '__main__':
         desc = rlinput("Short description: ")
         sources[name] = desc
 
-    print "Enter a description (type Ctrl-D on a blank line to finish):"
+    print("Enter a description (type Ctrl-D on a blank line to finish):")
     description = '\n'.join(sys.stdin.readlines())
     if not description.strip():
         description = None

@@ -20,7 +20,7 @@ __version__ = "$Revision$"
 
 import os, csv, glob, traceback, re
 import numpy as np
-import configs, bundles
+from . import configs, bundles
 
 debug = True
 rcps = ['rcp45', 'rcp85']
@@ -139,9 +139,9 @@ def sum_into_data(root, basenames, columns, config, transforms, vectransforms):
     for batch, rcp, gcm, iam, ssp, targetdir in configs.iterate_valid_targets(root, config, basenames):
         message_on_none = "No valid results sets found within directories."
         if isinstance(targetdir, str):
-            print targetdir
+            print(targetdir)
         else:
-            print targetdir[targetdir.keys()[0]], "..."
+            print(targetdir[list(targetdir.keys())[0]], "...")
 
         # Ensure that all basenames are accounted for
         foundall = True
@@ -182,14 +182,14 @@ def sum_into_data(root, basenames, columns, config, transforms, vectransforms):
                             data[filestuff][rowstuff][(batch, gcm, iam)] += value
                         observations += 1
             except:
-                print "Failed to read " + fullpath
+                print("Failed to read " + fullpath)
                 traceback.print_exc()
                 if debug:
                     exit()
 
-    print "Observations:", observations
+    print("Observations:", observations)
     if observations == 0:
-        print message_on_none
+        print(message_on_none)
     return data, years
 
 def deltamethod_variance(value, config):
