@@ -9,7 +9,8 @@ Supported configuration options:
 - region or regions (default: `null`)
 """
 
-import sys, csv
+import sys
+import csv
 from glean.lib import bundles, configs
 
 config, argv = configs.consume_config()

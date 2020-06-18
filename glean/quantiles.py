@@ -20,10 +20,11 @@ Supported configuration options:
 - ignore-missing (default: no)
 """
 
-import os, sys, csv, traceback, yaml, copy
+import csv
+import copy
 import numpy as np
 
-from glean.lib import results, bundles, weights, weights_vcv, configs
+from glean.lib import results, weights, weights_vcv, configs
 
 config, argv = configs.consume_config()
 configs.handle_multiimpact_vcv(config)

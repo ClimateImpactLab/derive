@@ -1,7 +1,10 @@
 ## Helper functions for reading the configuration
 
-import sys, os, re
-import yaml, csv
+import sys
+import os
+import re
+import yaml
+import csv
 import numpy as np
 from glean.lib import results
 

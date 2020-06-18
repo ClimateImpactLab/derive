@@ -18,7 +18,10 @@ __status__ = "Production"
 __version__ = "$Revision$"
 # $Source$
 
-import os, csv, glob, traceback, re
+import os
+import glob
+import traceback
+import re
 import numpy as np
 from glean.lib import configs, bundles
 

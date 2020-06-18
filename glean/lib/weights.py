@@ -18,7 +18,8 @@ __status__ = "Production"
 __version__ = "$Revision$"
 # $Source$
 
-import os, csv
+import os
+import csv
 import numpy as np
 from statsmodels.distributions.empirical_distribution import StepFunction
 
