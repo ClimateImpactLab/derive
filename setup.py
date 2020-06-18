@@ -9,9 +9,13 @@ setup(
     author_email="jarising@gmail.com",
     license="MIT",
     packages=find_packages(),
-    install_requires=["pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
+    install_requires=["click", "pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
     extras_require={
         "test": ["pytest"],
         "dev": ["pytest", "pytest-cov", "wheel", "flake8", "black", "twine"],
     },
+    entry_points="""
+    [console_scripts]
+    glean=glean.cli:glean_cli
+""",
 )
