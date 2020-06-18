@@ -10,4 +10,8 @@ setup(
     license="MIT",
     packages=find_packages(),
     install_requires=["pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
+    extras_require={
+        "test": ["pytest"],
+        "dev": ["pytest", "pytest-cov", "wheel", "flake8", "black", "twine"],
+    },
 )
