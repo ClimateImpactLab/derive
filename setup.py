@@ -9,5 +9,5 @@ setup(
     author_email="jarising@gmail.com",
     license="GNU v. 3",
     packages=find_packages(),
-    zip_safe=False,
+    install_requires=["pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
 )
