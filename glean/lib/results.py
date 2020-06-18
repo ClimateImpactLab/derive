@@ -12,7 +12,7 @@ __copyright__ = "Copyright 2014, Distributed Meta-Analysis System"
 __author__ = "James Rising"
 __credits__ = ["James Rising"]
 __maintainer__ = "James Rising"
-__email__ = "jar2234@columbia.edu"
+__email__ = "jarising@gmail.com"
 
 __status__ = "Production"
 __version__ = "$Revision$"
