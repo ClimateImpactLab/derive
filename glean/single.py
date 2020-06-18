@@ -13,51 +13,57 @@ import sys
 import csv
 from glean.api import bundles, configs
 
-config, argv = configs.consume_config()
-configs.handle_multiimpact_vcv(config)
-columns, basenames, transforms, vectransforms = configs.interpret_filenames(
-    argv, config
-)
 
-data = {}  # {region => { year => value }}
+def main(argv, config):
+    configs.handle_multiimpact_vcv(config)
+    columns, basenames, transforms, vectransforms = configs.interpret_filenames(
+        argv, config
+    )
 
-for ii in range(len(basenames)):
-    for region, years, values in bundles.iterate_regions(
-        basenames[ii], columns[ii], config
-    ):
-        if region not in data:
-            data[region] = {}
-        for year, value in bundles.iterate_values(years, values, config):
-            if region == "all":
-                value = vectransforms[ii](value)
-            else:
-                value = transforms[ii](value)
+    data = {}  # {region => { year => value }}
 
-            if year not in data[region]:
-                data[region][year] = value
-            else:
-                data[region][year] += value
+    for ii in range(len(basenames)):
+        for region, years, values in bundles.iterate_regions(
+            basenames[ii], columns[ii], config
+        ):
+            if region not in data:
+                data[region] = {}
+            for year, value in bundles.iterate_values(years, values, config):
+                if region == "all":
+                    value = vectransforms[ii](value)
+                else:
+                    value = transforms[ii](value)
 
-writer = csv.writer(sys.stdout)
-writer.writerow(["region", "year", "value"])
+                if year not in data[region]:
+                    data[region][year] = value
+                else:
+                    data[region][year] += value
 
-for region in data:
-    if region == "all":
-        for rr in range(len(config["regionorder"])):
+    writer = csv.writer(sys.stdout)
+    writer.writerow(["region", "year", "value"])
+
+    for region in data:
+        if region == "all":
+            for rr in range(len(config["regionorder"])):
+                for year in data[region]:
+                    if bundles.deltamethod_vcv is not None:
+                        value = bundles.deltamethod_vcv.dot(data[region][year][:, rr]).dot(
+                            data[region][year][:, rr]
+                        )
+                    else:
+                        value = data[region][year][rr]
+                    writer.writerow([config["regionorder"][rr], year, value])
+        else:
             for year in data[region]:
                 if bundles.deltamethod_vcv is not None:
-                    value = bundles.deltamethod_vcv.dot(data[region][year][:, rr]).dot(
-                        data[region][year][:, rr]
+                    value = bundles.deltamethod_vcv.dot(data[region][year]).dot(
+                        data[region][year]
                     )
                 else:
                     value = data[region][year][rr]
-                writer.writerow([config["regionorder"][rr], year, value])
-    else:
-        for year in data[region]:
-            if bundles.deltamethod_vcv is not None:
-                value = bundles.deltamethod_vcv.dot(data[region][year]).dot(
-                    data[region][year]
-                )
-            else:
-                value = data[region][year][rr]
-            writer.writerow([region, year, value])
+                writer.writerow([region, year, value])
+
+
+if __name__ == "__main__":
+    config, argv = configs.consume_config()
+    main(argv, config)
