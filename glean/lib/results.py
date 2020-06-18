@@ -20,7 +20,7 @@ __version__ = "$Revision$"
 
 import os, csv, glob, traceback, re
 import numpy as np
-from . import configs, bundles
+from glean.lib import configs, bundles
 
 debug = True
 rcps = ['rcp45', 'rcp85']

@@ -3,7 +3,7 @@
 import sys, os, re
 import yaml, csv
 import numpy as np
-from . import results
+from glean.lib import results
 
 def consume_config():
     if len(sys.argv) < 2:
@@ -193,7 +193,7 @@ def is_allregions(config):
 
 
 def get_regions(config, allregions):
-    """Grab and parse regions to extract from file
+    """Grab and parse regions to glean from file
 
     This handles the specification of the desired regions. Both a
     `region` (a single region as a string) and `regions` (a list of

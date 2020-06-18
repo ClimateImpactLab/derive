@@ -10,7 +10,7 @@ Supported configuration options:
 """
 
 import sys, csv
-from lib import bundles, configs
+from glean.lib import bundles, configs
 
 config, argv = configs.consume_config()
 configs.handle_multiimpact_vcv(config)

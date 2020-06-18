@@ -23,7 +23,7 @@ Supported configuration options:
 import os, sys, csv, traceback, yaml, copy
 import numpy as np
 
-from lib import results, bundles, weights, weights_vcv, configs
+from glean.lib import results, bundles, weights, weights_vcv, configs
 
 config, argv = configs.consume_config()
 configs.handle_multiimpact_vcv(config)
