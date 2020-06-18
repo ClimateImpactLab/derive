@@ -7,7 +7,7 @@ setup(
     url="",
     author="James Rising",
     author_email="jarising@gmail.com",
-    license="GNU v. 3",
+    license="MIT",
     packages=find_packages(),
     install_requires=["pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
 )
