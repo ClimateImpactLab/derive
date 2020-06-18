@@ -25,7 +25,7 @@ def get_yearses(fp, yearses):
     if yearses[0][0] < 1000:
         # Just head and tail or tail of results
         reader = csv.reader(fp)
-        reader.next()
+        next(reader)
         values = [float(row[1]) for row in reader]
 
         # Return a list of all requested subsets
@@ -73,7 +73,7 @@ def get_years(fp, years, column=2):
     """Return the results for the given years, as specifically requested years."""
     results = []
     reader = csv.reader(fp)
-    reader.next()
+    next(reader)
 
     years_ii = 0 # Start by looking for the first year
     for row in reader:

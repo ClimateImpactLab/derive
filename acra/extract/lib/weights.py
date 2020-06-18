@@ -46,7 +46,7 @@ def weighted_values(values, weights):
       values: Dictionary of GCM -> result value
       weights: Dictionary of GCM -> GCM weight
     """
-    models = values.keys()
+    models = list(values.keys())
     values_list = [values[model] for model in models if model in weights]
     weights_list = [weights[model] for model in models if model in weights]
 
@@ -60,7 +60,7 @@ class WeightedECDF(StepFunction):
         self.expected = sum(np.array(values) * np.array(weights)) / sum(weights)
 
         # Creat the cummulative sum that represents this ECDF
-        order = sorted(range(len(values)), key=lambda ii: values[ii])
+        order = sorted(list(range(len(values))), key=lambda ii: values[ii])
         self.values = np.array([values[ii] for ii in order])
         self.weights = [weights[ii] for ii in order]
 

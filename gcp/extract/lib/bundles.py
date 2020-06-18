@@ -21,7 +21,7 @@ __version__ = "$Revision$"
 import os, csv
 import numpy as np
 from netCDF4 import Dataset
-import configs
+from . import configs
 
 deltamethod_vcv = None
 
@@ -66,7 +66,7 @@ def read(filepath, column='rebased', deltamethod=False):
     try:
         rootgrp = Dataset(filepath, 'r', format='NETCDF4')
     except:
-        print "Error: Cannot read %s" % filepath
+        print("Error: Cannot read %s" % filepath)
         exit()
 
     years = rootgrp.variables['year'][:]
@@ -88,7 +88,7 @@ def read(filepath, column='rebased', deltamethod=False):
     rootgrp.close()
 
     # Correct bad regions in costs
-    if filepath[-10:] == '-costs.nc4' and not isinstance(regions[0], str) and not isinstance(regions[0], unicode) and np.isnan(regions[0]):
+    if filepath[-10:] == '-costs.nc4' and not isinstance(regions[0], str) and not isinstance(regions[0], str) and np.isnan(regions[0]):
         rootgrp = Dataset(filepath.replace('-costs.nc4', '.nc4'), 'r', format='NETCDF4')
         regions = rootgrp.variables['regions'][:]
         rootgrp.close()
@@ -119,8 +119,8 @@ def iterate_regions(filepath, column, config={}):
                 foundindex = ii
                 break
         if foundindex is None:
-            print np.sum(np.abs(deltamethod_vcv - config['multiimpact_vcv'][:deltamethod_vcv.shape[0], :deltamethod_vcv.shape[1]]))
-            print np.sum(np.abs(deltamethod_vcv - config['multiimpact_vcv'][deltamethod_vcv.shape[0]:, deltamethod_vcv.shape[1]:]))
+            print(np.sum(np.abs(deltamethod_vcv - config['multiimpact_vcv'][:deltamethod_vcv.shape[0], :deltamethod_vcv.shape[1]])))
+            print(np.sum(np.abs(deltamethod_vcv - config['multiimpact_vcv'][deltamethod_vcv.shape[0]:, deltamethod_vcv.shape[1]:])))
         assert foundindex is not None, "Cannot find the VCV for " + filepath + " within the master VCV."
         newdata = np.zeros(tuple([config['multiimpact_vcv'].shape[0]] + list(data.shape[1:])))
         if len(data.shape) == 2:
