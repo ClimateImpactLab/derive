@@ -23,7 +23,7 @@ import glob
 import traceback
 import re
 import numpy as np
-from glean.lib import configs, bundles
+from glean.api import configs, bundles
 
 debug = True
 rcps = ["rcp45", "rcp85"]

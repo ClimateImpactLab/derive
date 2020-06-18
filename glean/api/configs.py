@@ -6,7 +6,7 @@ import re
 import yaml
 import csv
 import numpy as np
-from glean.lib import results
+from glean.api import results
 
 
 def consume_config():

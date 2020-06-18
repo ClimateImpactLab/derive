@@ -11,7 +11,7 @@ Supported configuration options:
 
 import sys
 import csv
-from glean.lib import bundles, configs
+from glean.api import bundles, configs
 
 config, argv = configs.consume_config()
 configs.handle_multiimpact_vcv(config)
