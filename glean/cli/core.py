@@ -1,4 +1,6 @@
 import click
+import glean.api
+from glean.api.configs import read_config
 
 
 # This is your main entry point
@@ -8,14 +10,7 @@ def glean_cli():
 
 
 @glean_cli.command(help="Extract data from a single netCDF result file")
-@click.argument("netcdfpath", type=click.Path(exists=True))
-def single(netcdfpath):
-    """Run the glean single system with configuration file"""
-    raise NotImplementedError
-
-
-@glean_cli.command(help="Extract quantiles across collections of results")
-@click.argument("confpath", type=click.Path(exists=True))
+@click.argument("netcdfpath", required=True, type=click.Path(exists=True))
 @click.option(
     "-c",
     "--conf",
@@ -24,6 +19,28 @@ def single(netcdfpath):
     multiple=True,
     help="Additional KEY=VALUE configuration option.",
 )
-def quantiles(confpath, conf):
+def single(netcdfpath, conf):
+    """Run the glean single system with configuration file"""
+    arg_configs = dict(arg.strip().split("=") for arg in conf)
+    glean.api.single([netcdfpath], arg_configs)
+
+
+@glean_cli.command(help="Extract quantiles across collections of results")
+@click.argument("confpath", required=True, type=click.Path(exists=True))
+@click.argument("filecolumns", nargs=-1, help="File basename:column options.")
+@click.option(
+    "-c",
+    "--conf",
+    nargs=1,
+    default="",
+    multiple=True,
+    help="Additional KEY=VALUE configuration option.",
+)
+def quantiles(confpath, filecolumns, conf):
     """Run the glean quantiles system with configuration file"""
-    raise NotImplementedError
+    file_configs = read_config(confpath)
+
+    arg_configs = dict(arg.strip().split("=") for arg in conf)
+    file_configs.update(arg_configs)
+
+    glean.api.quantiles(filecolumns, file_configs)
