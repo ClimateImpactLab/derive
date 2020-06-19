@@ -8,14 +8,14 @@ def glean_cli():
 
 
 @glean_cli.command(help="Extract data from a single netCDF result file")
-@click.argument("netcdfpath", type=click.Path())
+@click.argument("netcdfpath", type=click.Path(exists=True))
 def single(netcdfpath):
     """Run the glean single system with configuration file"""
     raise NotImplementedError
 
 
 @glean_cli.command(help="Extract quantiles across collections of results")
-@click.argument("confpath", type=click.Path())
+@click.argument("confpath", type=click.Path(exists=True))
 @click.option(
     "-c",
     "--conf",
