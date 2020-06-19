@@ -43,9 +43,9 @@ def single(argv, config):
             for rr in range(len(config["regionorder"])):
                 for year in data[region]:
                     if bundles.deltamethod_vcv is not None:
-                        value = bundles.deltamethod_vcv.dot(data[region][year][:, rr]).dot(
+                        value = bundles.deltamethod_vcv.dot(
                             data[region][year][:, rr]
-                        )
+                        ).dot(data[region][year][:, rr])
                     else:
                         value = data[region][year][rr]
                     writer.writerow([config["regionorder"][rr], year, value])
@@ -80,7 +80,12 @@ def quantiles(argv, config):
         config2 = copy.copy(config)
         config2["deltamethod"] = True
         parallel_deltamethod_data, parallel_deltamethod_years = results.sum_into_data(
-            config["deltamethod"], basenames, columns, config2, transforms, vectransforms
+            config["deltamethod"],
+            basenames,
+            columns,
+            config2,
+            transforms,
+            vectransforms,
         )
 
     for filestuff in data:
@@ -138,7 +143,10 @@ def quantiles(argv, config):
                         try:
                             weight = model_weights[gcm.lower()]
                         except:
-                            print("Warning: No weight available for %s, so dropping." % gcm)
+                            print(
+                                "Warning: No weight available for %s, so dropping."
+                                % gcm
+                            )
                             weight = 0.0
                     else:
                         weight = 1.0
@@ -179,9 +187,12 @@ def quantiles(argv, config):
                                     ignore_missing=config.get("ignore-missing", False),
                                 )
                             myrowstuff = list(rowstuff)
-                            myrowstuff[rownames.index("region")] = config["regionorder"][ii]
+                            myrowstuff[rownames.index("region")] = config[
+                                "regionorder"
+                            ][ii]
                             writer.writerow(
-                                myrowstuff + list(distribution.inverse(encoded_evalqvals))
+                                myrowstuff
+                                + list(distribution.inverse(encoded_evalqvals))
                             )
                     else:
                         if configs.is_parallel_deltamethod(config):
@@ -196,7 +207,8 @@ def quantiles(argv, config):
                             )
 
                         writer.writerow(
-                            list(rowstuff) + list(distribution.inverse(encoded_evalqvals))
+                            list(rowstuff)
+                            + list(distribution.inverse(encoded_evalqvals))
                         )
                 elif output_format == "valuescsv":
                     for ii in range(len(allvalues)):
