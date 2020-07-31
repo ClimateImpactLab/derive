@@ -357,9 +357,7 @@ def csv_sorted(rowstuffs, config):
     else:
         regioncol = names.index("region")
         key = lambda rowstuff: rowstuff[regioncol]
-        cmp = (
-            lambda a, b: regionorder.index(b) - regionorder.index(a)
-        )
+        cmp = lambda a, b: regionorder.index(b) - regionorder.index(a)
 
     if cmp is None:
         return sorted(rowstuffs, key=key)
