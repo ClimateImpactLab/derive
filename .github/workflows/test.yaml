@@ -23,8 +23,8 @@ jobs:
     - name: Test code quality
       shell: bash -l {0}
       run: |
-        # flake8
-        # black -v --check glean/*
+        flake8
+        black -v --check glean/*
     - name: Build package, install
       shell: bash -l {0}
       run: |
