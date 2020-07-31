@@ -5,11 +5,17 @@ import os
 import re
 import yaml
 import csv
+import warnings
 import numpy as np
 from glean.api import results
 
 
 def consume_config():
+    warnings.warn(
+        "consume_config is deprecated, CLI input should be parsed in glean.cli",
+        DeprecationWarning,
+    )
+
     if len(sys.argv) < 2:
         print("Please specify a configuration (.yml) file.")
         exit()
