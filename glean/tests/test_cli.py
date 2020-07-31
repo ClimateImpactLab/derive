@@ -97,7 +97,7 @@ def test_quantiles_nofile(mocker):
             {"abc": 123},
         ),
         (
-            ["-c", "region=CAN.1.2.28", "basefilename", ],
+            ["-c", "region=CAN.1.2.28", "basefilename"],
             ("basefilename",),
             {"abc": 123, "region": "CAN.1.2.28"},
         ),
