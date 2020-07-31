@@ -1,15 +1,13 @@
-name: Python package
+name: Test python package
 
 on: [push]
 
 jobs:
-  tests:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-
     steps:
     - uses: actions/checkout@v2
     - uses: goanpeca/setup-miniconda@v1
