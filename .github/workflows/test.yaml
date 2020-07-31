@@ -21,7 +21,7 @@ jobs:
       shell: bash -l {0}
       run: |
         # We really should be using an environment.yaml file for this spec
-        conda install pip numpy click pyyaml numpy scipy statsmodels netCDF4 pytest twine flake8 black
+        conda install pip numpy click pyyaml numpy scipy statsmodels netCDF4 pytest pytest-mock twine flake8 black
     - name: Test code quality
       shell: bash -l {0}
       run: |
