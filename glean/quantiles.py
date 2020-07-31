@@ -21,8 +21,14 @@ Supported configuration options:
 """
 
 if __name__ == "__main__":
+    import warnings
     from glean.api import quantiles
     from glean.api.configs import consume_config
+
+    warnings.warn(
+        "quantiles.py is deprecated, please use `glean quantiles`",
+        FutureWarning
+    )
 
     config, argv = consume_config()
     quantiles(argv, config)
