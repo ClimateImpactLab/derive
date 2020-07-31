@@ -64,7 +64,9 @@ def read(filepath, column="rebased", deltamethod=False):
 
     try:
         rootgrp = Dataset(filepath, "r", format="NETCDF4")
-    except Exception:
+    except Exception as ex:
+        import traceback  # CATBELL
+        print("".join(traceback.format_exception(ex.__class__, ex, ex.__traceback__)))  # CATBELL
         print("Error: Cannot read %s" % filepath)
         exit()
 
