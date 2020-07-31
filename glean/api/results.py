@@ -220,7 +220,7 @@ def sum_into_data(root, basenames, columns, config, transforms, vectransforms):
                         else:
                             data[filestuff][rowstuff][(batch, gcm, iam)] += value
                         observations += 1
-            except:
+            except Exception:
                 print("Failed to read " + fullpath)
                 traceback.print_exc()
                 if debug:
