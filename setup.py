@@ -12,7 +12,7 @@ setup(
     install_requires=["click", "pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
     extras_require={
         "test": ["pytest"],
-        "dev": ["pytest", "pytest-cov", "wheel", "flake8", "black", "twine"],
+        "dev": ["pytest", "pytest-cov", "pytest-mock", "wheel", "flake8", "black", "twine"],
     },
     entry_points="""
     [console_scripts]
