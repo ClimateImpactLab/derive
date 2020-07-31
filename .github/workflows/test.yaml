@@ -1,9 +1,9 @@
-name: Test
+name: Python package
 
 on: [push]
 
 jobs:
-  test:
+  tests:
 
     runs-on: ubuntu-latest
     strategy:
@@ -26,7 +26,7 @@ jobs:
       shell: bash -l {0}
       run: |
         # flake8
-        black -v --check glean/*
+        # black -v --check glean/*
     - name: Build package, install
       shell: bash -l {0}
       run: |
