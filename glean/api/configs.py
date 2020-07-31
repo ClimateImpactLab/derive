@@ -29,7 +29,7 @@ def consume_config():
                 if chunks[0] == "config":
                     config = read_config(chunks[1])
                 else:
-                    config[chunks[0]] = yaml.load(chunks[1])
+                    config[chunks[0]] = yaml.safe_load(chunks[1])
             else:
                 config[arg[2:]] = True
         else:
@@ -40,7 +40,7 @@ def consume_config():
 
 def read_config(filename):
     with open(filename, "r") as fp:
-        config = yaml.load(fp)
+        config = yaml.safe_load(fp)
         return config
 
 
