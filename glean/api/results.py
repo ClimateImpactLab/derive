@@ -20,7 +20,6 @@ __version__ = "$Revision$"
 
 import os
 import glob
-import traceback
 import re
 import numpy as np
 from glean.api import configs, bundles
@@ -220,7 +219,14 @@ def sum_into_data(root, basenames, columns, config, transforms, vectransforms):
                         else:
                             data[filestuff][rowstuff][(batch, gcm, iam)] += value
                         observations += 1
-            except:
+            except Exception as ex:
+                import traceback  # CATBELL
+
+                print(
+                    "".join(
+                        traceback.format_exception(ex.__class__, ex, ex.__traceback__)
+                    )
+                )  # CATBELL
                 print("Failed to read " + fullpath)
                 traceback.print_exc()
                 if debug:

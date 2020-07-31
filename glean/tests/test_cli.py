@@ -97,7 +97,7 @@ def test_quantiles_nofile(mocker):
             {"abc": 123},
         ),
         (
-            ["-c", "region=CAN.1.2.28", "basefilename",],
+            ["-c", "region=CAN.1.2.28", "basefilename"],
             ("basefilename",),
             {"abc": 123, "region": "CAN.1.2.28"},
         ),
@@ -124,5 +124,5 @@ def test_quantiles_argpass(mocker, tempfl, addargs, expected_argv, expected_conf
 
     runner = CliRunner()
 
-    results = runner.invoke(glean.cli.glean_cli, cli_args)
+    runner.invoke(glean.cli.glean_cli, cli_args)
     glean.api.quantiles.assert_called_once_with(expected_argv, expected_config)

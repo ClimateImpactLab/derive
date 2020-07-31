@@ -136,13 +136,22 @@ def quantiles(argv, config):
 
                 for batch, gcm, iam in data[filestuff][rowstuff]:
                     value = data[filestuff][rowstuff][(batch, gcm, iam)]
-                    if config.get("deltamethod", False) == True:
+                    if config.get("deltamethod", False):
                         value = results.deltamethod_variance(value, config)
 
                     if do_gcmweights:
                         try:
                             weight = model_weights[gcm.lower()]
-                        except:
+                        except Exception as ex:
+                            import traceback  # CATBELL
+
+                            print(
+                                "".join(
+                                    traceback.format_exception(
+                                        ex.__class__, ex, ex.__traceback__
+                                    )
+                                )
+                            )  # CATBELL
                             print(
                                 "Warning: No weight available for %s, so dropping."
                                 % gcm

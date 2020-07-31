@@ -64,8 +64,8 @@ class WeightedGMCDF(object):
 
 
 if __name__ == "__main__":
-    ## Example between R and python
-    ## R:
+    # # Example between R and python
+    # # R:
     # means <- rnorm(10)
     # sds <- rexp(10)
     # weights <- runif(10)
@@ -73,12 +73,12 @@ if __name__ == "__main__":
     # draws <- sapply(1:100000, function(ii) sample(rnorm(10, means, sds), 1, prob=weights))
     # pp <- runif(10)
     # quantile(draws, pp)
-    ## For the values below:
+    # # For the values below:
     # > quantile(draws, pp)
     #  4.261865%   57.54305%   9.961645%    13.1325%    68.3729%   89.93871%   37.68216%   25.06827%    72.6134%   92.35501%
     # -2.70958468  0.77240194 -2.15403320 -1.90146370  1.17428553  1.95475922 -0.06482985 -0.92293638  1.36865349  2.00405179
 
-    ## Python:
+    # Python:
     means = [
         -1.10402809,
         1.91300947,

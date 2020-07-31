@@ -1,4 +1,5 @@
-## Helper functions for reading the configuration
+"""Helper functions for reading the configuration
+"""
 
 import sys
 import os
@@ -223,13 +224,13 @@ def interpret_filenames(argv, config):
     return columns, basenames, transforms, vectransforms
 
 
-## Plural handling
+# Plural handling
 
 
 def is_allregions(config):
     return not (
         "region" in config or "regions" in config
-    ) and not "region" in config.get("file-organize", [])
+    ) and "region" not in config.get("file-organize", [])
 
 
 def get_regions(config, allregions):
@@ -276,7 +277,7 @@ def get_years(config, years):
     return config.get("years", years)
 
 
-## CSV Creation
+# CSV Creation
 
 
 def csv_organize(rcp, ssp, region, year, config):
@@ -356,7 +357,7 @@ def csv_sorted(rowstuffs, config):
     else:
         regioncol = names.index("region")
         key = lambda rowstuff: rowstuff[regioncol]
-        cmp = regionorder.index(b) - regionorder.index(a)
+        cmp = lambda a, b: regionorder.index(b) - regionorder.index(a)
 
     if cmp is None:
         return sorted(rowstuffs, key=key)

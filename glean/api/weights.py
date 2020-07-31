@@ -41,7 +41,7 @@ def get_weights_april2016(rcp):
         "rU",
     ) as tsvfp:
         reader = csv.reader(tsvfp, delimiter="\t")
-        header = next(reader)
+        next(reader)
         for row in reader:
             model = row[1].split("_")[0].strip("*").lower()
             weight = float(row[2])
@@ -60,7 +60,7 @@ def get_weights_march2018(rcp):
         "/shares/gcp/climate/BCSD/SMME/SMME-weights/" + rcp + "_SMME_weights.tsv", "rU"
     ) as tsvfp:
         reader = csv.reader(tsvfp, delimiter="\t")
-        header = next(reader)
+        next(reader)
         for row in reader:
             model = row[1].strip("*").lower()
             if "_" in model:
@@ -148,5 +148,12 @@ if __name__ == "__main__":
         for gcm in os.listdir(os.path.join(batchdir, rcp)):
             try:
                 print(gcm, weights[gcm.lower()])
-            except:
+            except Exception as ex:
+                import traceback  # CATBELL
+
+                print(
+                    "".join(
+                        traceback.format_exception(ex.__class__, ex, ex.__traceback__)
+                    )
+                )  # CATBELL
                 print("Cannot find weight for %s under %s" % (gcm, rcp))

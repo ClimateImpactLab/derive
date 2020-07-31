@@ -14,10 +14,7 @@ if __name__ == "__main__":
     from glean.api import single
     from glean.api.configs import consume_config
 
-    warnings.warn(
-        "single.py is deprecated, please use `glean single`",
-        FutureWarning
-    )
+    warnings.warn("single.py is deprecated, please use `glean single`", FutureWarning)
 
     config, argv = consume_config()
     single(argv, config)

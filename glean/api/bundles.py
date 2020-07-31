@@ -18,7 +18,6 @@ __status__ = "Production"
 __version__ = "$Revision$"
 # $Source$
 
-import os, csv
 import numpy as np
 from netCDF4 import Dataset
 from glean.api import configs
@@ -65,7 +64,12 @@ def read(filepath, column="rebased", deltamethod=False):
 
     try:
         rootgrp = Dataset(filepath, "r", format="NETCDF4")
-    except:
+    except Exception as ex:
+        import traceback  # CATBELL
+
+        print(
+            "".join(traceback.format_exception(ex.__class__, ex, ex.__traceback__))
+        )  # CATBELL
         print("Error: Cannot read %s" % filepath)
         exit()
 
@@ -126,7 +130,7 @@ def iterate_regions(filepath, column, config={}):
         data = data2 / 1e5
 
     if deltamethod_vcv is not None and not config.get("deltamethod", False):
-        ## Inferred that these were deltamethod files
+        # Inferred that these were deltamethod files
         config["deltamethod"] = True
 
     if config.get("multiimpact_vcv", None) is not None and deltamethod_vcv is not None:
@@ -204,7 +208,7 @@ def iterate_values(years, values, config={}):
 
     if "yearsets" in config and config["yearsets"]:
         yearsets = config["yearsets"]
-        if yearsets == True:
+        if yearsets:
             yearsets = [(2000, 2019), (2020, 2039), (2040, 2059), (2080, 2099)]
 
         for yearset in yearsets:
