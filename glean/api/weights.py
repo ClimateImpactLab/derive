@@ -150,5 +150,10 @@ if __name__ == "__main__":
                 print(gcm, weights[gcm.lower()])
             except Exception as ex:
                 import traceback  # CATBELL
-                print("".join(traceback.format_exception(ex.__class__, ex, ex.__traceback__)))  # CATBELL
+
+                print(
+                    "".join(
+                        traceback.format_exception(ex.__class__, ex, ex.__traceback__)
+                    )
+                )  # CATBELL
                 print("Cannot find weight for %s under %s" % (gcm, rcp))
