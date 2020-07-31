@@ -27,7 +27,6 @@ def single(netcdfpath, conf):
 
 @glean_cli.command(help="Extract quantiles across collections of results")
 @click.argument("confpath", required=True, type=click.Path(exists=True))
-@click.argument("filecolumns", nargs=-1, help="File basename:column options.")
 @click.option(
     "-c",
     "--conf",
@@ -36,11 +35,12 @@ def single(netcdfpath, conf):
     multiple=True,
     help="Additional KEY=VALUE configuration option.",
 )
-def quantiles(confpath, filecolumns, conf):
+@click.argument("basenames", nargs=-1)
+def quantiles(confpath, basenames, conf):
     """Run the glean quantiles system with configuration file"""
     file_configs = read_config(confpath)
 
     arg_configs = dict(arg.strip().split("=") for arg in conf)
     file_configs.update(arg_configs)
 
-    glean.api.quantiles(filecolumns, file_configs)
+    glean.api.quantiles(basenames, file_configs)
