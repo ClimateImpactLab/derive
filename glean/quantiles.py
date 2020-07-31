@@ -26,8 +26,7 @@ if __name__ == "__main__":
     from glean.api.configs import consume_config
 
     warnings.warn(
-        "quantiles.py is deprecated, please use `glean quantiles`",
-        FutureWarning
+        "quantiles.py is deprecated, please use `glean quantiles`", FutureWarning
     )
 
     config, argv = consume_config()
