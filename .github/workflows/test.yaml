@@ -1,0 +1,39 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: goanpeca/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge
+    - name: Install dependencies
+      run: |
+        # We really should be using an environment.yaml file for this spec
+        conda install pip numpy click pyyaml numpy scipy statsmodels netCDF4 pytest twine flake8 black
+    - name: Test code quality
+      run: |
+        flake8
+        black -v --check glean/*
+    - name: Build package, install
+      run: |
+        python setup.py bdist_wheel sdist
+    - name: Test package quality
+      run: |
+        twine check dist/*
+    - name: Install package
+      run: |
+        pip install .
+    - name: Test package with pytest
+      run: |
+        pytest -v --pyargs glean
