@@ -37,7 +37,11 @@ Use the `--help` option with `derive`, `derive single`, or `derive quantiles` fo
 
 ## Installation
 
-You can install the package with
+You can install the package from PyPI with
+```shell
+pip install derive
+```
+for a bleeding-edge version:
 ```shell
 pip install git+https:github.com/climateimpactlab/derive
 ```
