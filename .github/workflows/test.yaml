@@ -24,7 +24,7 @@ jobs:
       shell: bash -l {0}
       run: |
         flake8
-        black -v --check glean/*
+        black -v --check derive/*
     - name: Build package, install
       shell: bash -l {0}
       run: |
@@ -40,4 +40,4 @@ jobs:
     - name: Test package with pytest
       shell: bash -l {0}
       run: |
-        pytest -v --pyargs glean
+        pytest -v --pyargs derive

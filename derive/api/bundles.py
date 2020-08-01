@@ -20,7 +20,7 @@ __version__ = "$Revision$"
 
 import numpy as np
 from netCDF4 import Dataset
-from glean.api import configs
+from derive.api import configs
 
 deltamethod_vcv = None
 

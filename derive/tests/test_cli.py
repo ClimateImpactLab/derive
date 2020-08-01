@@ -1,8 +1,8 @@
 import tempfile
 import pytest
 from click.testing import CliRunner
-import glean.cli
-import glean.api
+import derive.cli
+import derive.api
 
 
 @pytest.yield_fixture
@@ -26,18 +26,18 @@ def test_cli_helpflags(subcmd):
     if subcmd is not None:
         cli_args = [subcmd, "--help"]
 
-    result = runner.invoke(glean.cli.glean_cli, cli_args)
+    result = runner.invoke(derive.cli.derive_cli, cli_args)
     assert "Error:" not in result.output
 
 
 def test_single_nofile(mocker):
     """Ensure that 'single' gives error output if input file doesn't exist"""
-    mocker.patch.object(glean.api, "single")
+    mocker.patch.object(derive.api, "single")
     tempfile_name = "doesntexist.foobar"
 
     runner = CliRunner()
 
-    result = runner.invoke(glean.cli.glean_cli, ["single", tempfile_name])
+    result = runner.invoke(derive.cli.derive_cli, ["single", tempfile_name])
     assert "Error:" in result.output and "does not exist" in result.output
 
 
@@ -55,7 +55,7 @@ def test_single_nofile(mocker):
 )
 def test_single_argpass(mocker, tempfl, addargs, expected):
     """Whitebox test that 'single' subcommand correctly passes args to API"""
-    mocker.patch.object(glean.api, "single")
+    mocker.patch.object(derive.api, "single")
     cli_args = ["single"]
 
     # Assemble CLI args
@@ -67,18 +67,18 @@ def test_single_argpass(mocker, tempfl, addargs, expected):
 
     runner = CliRunner()
 
-    runner.invoke(glean.cli.glean_cli, cli_args)
-    glean.api.single.assert_called_once_with([tempfile_name], expected)
+    runner.invoke(derive.cli.derive_cli, cli_args)
+    derive.api.single.assert_called_once_with([tempfile_name], expected)
 
 
 def test_quantiles_nofile(mocker):
     """Ensure that 'quantiles' gives error output if input file doesn't exist"""
-    mocker.patch.object(glean.api, "quantiles")
+    mocker.patch.object(derive.api, "quantiles")
     tempfile_name = "doesntexist.foobar"
 
     runner = CliRunner()
 
-    result = runner.invoke(glean.cli.glean_cli, ["quantiles", tempfile_name])
+    result = runner.invoke(derive.cli.derive_cli, ["quantiles", tempfile_name])
     assert "Error:" in result.output and "does not exist" in result.output
 
 
@@ -110,8 +110,8 @@ def test_quantiles_nofile(mocker):
 )
 def test_quantiles_argpass(mocker, tempfl, addargs, expected_argv, expected_config):
     """Whitebox test that 'quantiles' subcommand correctly passes args to API"""
-    mocker.patch.object(glean.api, "quantiles")
-    mocker.patch.object(glean.cli.core, "read_config", return_value={"abc": 123})
+    mocker.patch.object(derive.api, "quantiles")
+    mocker.patch.object(derive.cli.core, "read_config", return_value={"abc": 123})
 
     cli_args = ["quantiles"]
 
@@ -124,5 +124,5 @@ def test_quantiles_argpass(mocker, tempfl, addargs, expected_argv, expected_conf
 
     runner = CliRunner()
 
-    runner.invoke(glean.cli.glean_cli, cli_args)
-    glean.api.quantiles.assert_called_once_with(expected_argv, expected_config)
+    runner.invoke(derive.cli.derive_cli, cli_args)
+    derive.api.quantiles.assert_called_once_with(expected_argv, expected_config)
