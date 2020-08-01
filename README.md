@@ -37,11 +37,7 @@ Use the `--help` option with `glean`, `glean single`, or `glean quantiles` for m
 
 ## Installation
 
-You can install the package from PyPI with
-```shell
-pip install glean
-```
-for a bleeding-edge version:
+You can install the package with
 ```shell
 pip install git+https:github.com/climateimpactlab/glean
 ```
