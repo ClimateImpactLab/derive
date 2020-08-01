@@ -1,75 +1,53 @@
-# Installation:
+# glean
 
-On Shackleton, download the Prospectus Tools git repository:
-git clone https://github.com/jrising/prospectus-tools/
+Tools for processing results of the Climate Prospectus.
 
-# Available scripts
+This is a rough packaging and cleanup of [jrising/prospectus-tools](https://github.com/jrising/prospectus-tools).
 
-The following scripts are provided, and explained in more detail below.
+## Examples
 
-- single.py: Extract data from a single netCDF result file.
-  Usage: `python single.py <OPTIONS> FILEPATH.nc4`
-
-- quantiles.py: Extract quantiles across collections of results.
-  Usage: `python quantiles.py CONFIG.yml <OPTIONS> <->BASENAME...`
-
-These scripts are configurable, either from the command line (using
-the syntax `--NAME=VALUE` or in a `.yml` file.  Options on the command
-line override options in the configuration file.
-
-# Using `single.py`
-
-`single.py` extracts data from a netCDF and writes it to the standard output.
-
-Use cases:
-- Translate all of the final result across all regions and times into a CSV
-
-  `python single.py /shares/gcp/outputs/mortality/impacts-pharaoh/single-current/rcp85/CCSM4/OECD\ Env-Growth/SSP3_v9_130325/global_interaction_gmfd.nc4`
-  
-- Collect the timeseries for a given county
-
-  `python single.py --region=CAN.1.2.28 /shares/gcp/outputs/mortality/impacts-pharaoh/single-current/rcp85/CCSM4/OECD\ Env-Growth/SSP3_v9_130325/global_interaction_gmfd.nc4`
-  
-- Produce averages over sets of years
-
-  `python single.py --region=CAN.1.2.28 --yearsets=yes /shares/gcp/outputs/mortality/impacts-pharaoh/single-current/rcp85/CCSM4/OECD\ Env-Growth/SSP3_v9_130325/global_interaction_gmfd.nc4`
-
-## Using `quantiles.py`
-
-Start by setting up a configuration file.  A few configuration files
-are included in the `quantile-configs` folder.  Short comments are in
-the `quantile-configs` configurations; more details are in the
-[configuration documentation](config-docs.md).
-
-Then run the quantiles script as follows:
-
+After an impact projection has completed, running the command
+```shell
+glean single -c region=CAN.1.2.28 /path/to/projection/output.nc
 ```
-python quantiles.py CONFIG.yml <OPTIONS> <->BASENAME...
+will extract a timeseries for the given country into a local CSV file.
+
+Similarly, given a YAML [configuration file](https://github.com/ClimateImpactLab/glean/blob/master/config-docs.md), we can extract more sophisticated quantiles from the output projection data.
+
+```shell
+glean quantiles config.yaml -- outputbasename -historicalbasename
 ```
 
-After the configuration file comes a list (or just one) basename,
-which is the name of a result file excluding the directory and the
-`.nc4` suffix.  For example, if you want to extract data from all
-files called "global_interaction_best.nc4", use
-`global_interaction_best`.  The results from the files are summed
-before being aggregated across models.  If you put a minus sign (`-`)
-before the BASENAME, the result will be subtracted from the sum.
+Here we're extracting quantiles given a configuration while also defining a glob-like "basename", identifying which output files to extract from. With `-historicalbasename` we're subtracting results from the sum using files with the `historicalbasename` basename pattern.
 
-You can extract a particular region by adding an option like
-`--region=...`.  In an unaggregated file, this must be the name of an
-impact region.  In an aggregated file, it may be `global`, an ISO3
-country, or a FUND region specified in the form FUND-XXX.  To get a
-full list of the region names available in a given file, type `ncdump
--v regions FILEPATH`.
+Much like before, we can add additional configurations that might not be in our configuration file. For example:
+```shell
+glean quantiles config.yaml \ 
+    -c region=USA \
+    -- outputbasename -historicalbasename
+```
+and here we're getting quantile values for the USA, over a given year span:
+```shell
+glean quantiles config.yaml \ 
+    -c region=USA \
+    -c yearsets=True \
+    outputbasename
+```
+Use the `--help` option with `glean`, `glean single`, or `glean quantiles` for more details.
 
-The script produces new directories under the `output-dir` specified
-in the config yml file.  The division across files is specified by the `file-organize` configuration option, with RCP and SSP the default.
+## Installation
 
-Use cases:
-- Get a quantiles timeseries for a given region, relative to historical climate
+You can install the package from PyPI with
+```shell
+pip install glean
+```
+for a bleeding-edge version:
+```shell
+pip install git+https:github.com/climateimpactlab/glean
+```
 
-  `python quantiles.py configs/labor.yml --region=CAN.1.2.28 labor_global_interaction_best_13dec -labor_global_interaction_best_13dec-histclim`
+## Development and Support
 
-- Get the quantiles values for all regions over a given year span.
+Source code is [hosted online](https://github.com/climateimpactlab/glean) under an Open Source license. Please feel free to file any [bugs and issues](https://github.com/ClimateImpactLab/glean) you find. 
 
-  `python quantiles.py configs/labor.yml --yearsets=yes labor_global_interaction_best_13dec`
+This code is modified from James Rising's jrising/prospectus-tools, which is available under an Open Source MIT license at https://github.com/jrising/prospectus-tools.
