@@ -8,12 +8,12 @@ import yaml
 import csv
 import warnings
 import numpy as np
-from glean.api import results
+from derive.api import results
 
 
 def consume_config():
     warnings.warn(
-        "consume_config is deprecated, CLI input should be parsed in glean.cli",
+        "consume_config is deprecated, CLI input should be parsed in derive.cli",
         DeprecationWarning,
     )
 
@@ -234,7 +234,7 @@ def is_allregions(config):
 
 
 def get_regions(config, allregions):
-    """Grab and parse regions to glean from file
+    """Grab and parse regions to derive from file
 
     This handles the specification of the desired regions. Both a
     `region` (a single region as a string) and `regions` (a list of

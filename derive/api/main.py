@@ -7,7 +7,7 @@ import csv
 import copy
 import numpy as np
 
-from glean.api import bundles, results, weights, weights_vcv, configs
+from derive.api import bundles, results, weights, weights_vcv, configs
 
 
 def single(argv, config):

@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="glean",
+    name="derive",
     use_scm_version=True,
     description="Tools for processing results of the Climate Prospectus.",
-    url="https://github.com/ClimateImpactLab/glean",
+    url="https://github.com/ClimateImpactLab/derive",
     author="James Rising",
     author_email="jarising@gmail.com",
     license="MIT",
@@ -18,6 +18,6 @@ setup(
     },
     entry_points="""
     [console_scripts]
-    glean=glean.cli:glean_cli
+    derive=derive.cli:derive_cli
 """,
 )

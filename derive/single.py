@@ -11,10 +11,10 @@ Supported configuration options:
 
 if __name__ == "__main__":
     import warnings
-    from glean.api import single
-    from glean.api.configs import consume_config
+    from derive.api import single
+    from derive.api.configs import consume_config
 
-    warnings.warn("single.py is deprecated, please use `glean single`", FutureWarning)
+    warnings.warn("single.py is deprecated, please use `derive single`", FutureWarning)
 
     config, argv = consume_config()
     single(argv, config)
