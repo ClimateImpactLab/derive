@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name="glean",
@@ -8,7 +8,8 @@ setup(
     author="James Rising",
     author_email="jarising@gmail.com",
     license="MIT",
-    packages=find_packages(),
+    packages=["glean"],
+    zip_safe=False,
     install_requires=["click", "pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
     setup_requires=["setuptools_scm"],
     extras_require={
