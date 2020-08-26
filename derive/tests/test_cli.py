@@ -49,7 +49,7 @@ def test_single_nofile(mocker):
         (["--conf", "region=CAN.1.2.28"], {"region": "CAN.1.2.28"}),
         (
             ["-c", "region=CAN.1.2.28", "-c", "yearsets=yes"],
-            {"region": "CAN.1.2.28", "yearsets": "yes"},
+            {"region": "CAN.1.2.28", "yearsets": True},
         ),
     ],
 )
