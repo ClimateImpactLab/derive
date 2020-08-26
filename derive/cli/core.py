@@ -25,7 +25,7 @@ def single(netcdfpath, conf):
     # Parse CLI config values as yaml str before merging.
     arg_configs = {}
     for k, v in (arg.strip().split("=") for arg in conf):
-        arg_configs[k] = yaml.safe_load(v)
+        arg_configs[k] = safe_load(v)
 
     derive.api.single([netcdfpath], arg_configs)
 
@@ -48,7 +48,7 @@ def quantiles(confpath, basenames, conf):
     # Parse CLI config values as yaml str before merging.
     arg_configs = {}
     for k, v in (arg.strip().split("=") for arg in conf):
-        arg_configs[k] = yaml.safe_load(v)
+        arg_configs[k] = safe_load(v)
     file_configs.update(arg_configs)
 
     derive.api.quantiles(basenames, file_configs)
