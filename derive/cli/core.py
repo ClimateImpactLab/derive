@@ -1,4 +1,5 @@
 import click
+from yaml import safe_load
 import derive.api
 from derive.api.configs import read_config
 
@@ -21,7 +22,11 @@ def derive_cli():
 )
 def single(netcdfpath, conf):
     """Run the derive single system with configuration file"""
-    arg_configs = dict(arg.strip().split("=") for arg in conf)
+    # Parse CLI config values as yaml str before merging.
+    arg_configs = {}
+    for k, v in (arg.strip().split("=") for arg in conf):
+        arg_configs[k] = yaml.safe_load(v)
+
     derive.api.single([netcdfpath], arg_configs)
 
 
@@ -40,7 +45,10 @@ def quantiles(confpath, basenames, conf):
     """Run the derive quantiles system with configuration file"""
     file_configs = read_config(confpath)
 
-    arg_configs = dict(arg.strip().split("=") for arg in conf)
+    # Parse CLI config values as yaml str before merging.
+    arg_configs = {}
+    for k, v in (arg.strip().split("=") for arg in conf):
+        arg_configs[k] = yaml.safe_load(v)
     file_configs.update(arg_configs)
 
     derive.api.quantiles(basenames, file_configs)
