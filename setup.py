@@ -12,7 +12,10 @@ setup(
     author="James Rising",
     author_email="jarising@gmail.com",
     license="MIT",
-    packages=find_packages(),
+    project_urls={
+        "Source": "https://github.com/ClimateImpactLab/derive",
+        "Tracker": "https://github.com/ClimateImpactLab/derive/issues",
+    },
     zip_safe=False,
     install_requires=requirements,
     setup_requires=["setuptools_scm"],
