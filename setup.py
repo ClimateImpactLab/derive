@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
 
+
+with open("requirements.txt") as f:
+    requirements = f.read().strip().split("\n")
+
 setup(
     name="derive",
     use_scm_version=True,
@@ -10,12 +14,8 @@ setup(
     license="MIT",
     packages=find_packages(),
     zip_safe=False,
-    install_requires=["click", "pyyaml", "numpy", "scipy", "statsmodels", "netCDF4"],
+    install_requires=requirements,
     setup_requires=["setuptools_scm"],
-    extras_require={
-        "test": ["pytest"],
-        "dev": ["pytest", "pytest-cov", "pytest-mock", "wheel", "flake8", "black", "twine"],
-    },
     entry_points="""
     [console_scripts]
     derive=derive.cli:derive_cli
