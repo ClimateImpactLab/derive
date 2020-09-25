@@ -16,6 +16,7 @@ setup(
         "Source": "https://github.com/ClimateImpactLab/derive",
         "Tracker": "https://github.com/ClimateImpactLab/derive/issues",
     },
+    packages=find_packages(include=["derive", "derive.*"]),
     zip_safe=False,
     install_requires=requirements,
     setup_requires=["setuptools_scm"],
